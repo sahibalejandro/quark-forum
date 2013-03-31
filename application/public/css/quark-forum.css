@@ -1,0 +1,85 @@
+body {
+  padding-top: 40px;
+}
+
+#messages-area .alert:first-child {
+  margin-top: 15px;
+}
+
+#breadcrumbs {
+  margin-top: 10px;
+}
+
+.categories-list .col-category {
+  width: 60%;
+}
+
+.categories-list .col-post-count {
+  width: 10%;
+}
+
+.post-info {
+  font-size: 10px;
+}
+
+.post-date-small {
+  font-size: 10px;
+}
+
+.cell-centered {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.last-post {
+  font-size: 10px;
+}
+
+.post-buttons,
+.post-comment-buttons {
+  border-bottom: 1px solid #eee;
+  font-size: 10px;
+  font-weight: bold;
+  padding-top: 20px;
+  text-align: right;
+}
+
+.post-buttons a,
+.post-comment-buttons a {
+  margin-left: 10px;
+}
+
+.post-comments {
+  padding-top: 30px;
+}
+
+.post-comment {
+  padding: 2px;
+}
+
+.post-comment-target {
+  background-color: #eee;
+}
+
+.post-comment-info {
+  font-size: 10px;
+}
+
+.post-comment-info [class^="icon-"] {
+  vertical-align: top;
+}
+
+#footer {
+  background-color: #1B1B1B;
+  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-repeat: repeat-x;
+  color: #999;
+  font-size: 12px;
+  margin-top: 50px;
+  padding: 10px 0 50px 0;
+  text-shadow: 1px 1px 0px #000;
+}
+
+#footer a {
+  text-shadow: none;
+}
