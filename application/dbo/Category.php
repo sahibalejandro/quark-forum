@@ -21,6 +21,7 @@ class Category extends QuarkDBObject
     $global_posts = Post::query()->select()
       ->join('User')
       ->where(array('posts_id' => null, 'categories_id' => null))
+      ->orderBy('id', 'desc')
       ->exec();
 
     // Sticky posts
@@ -29,7 +30,7 @@ class Category extends QuarkDBObject
       ->where(array(
         'categories_id' => $this->id,
         'posts_id'      => null,
-        'sticky'         => 1
+        'sticky'        => 1
       ))
       ->orderBy('id', 'desc')
       ->exec();
@@ -40,7 +41,7 @@ class Category extends QuarkDBObject
       ->where(array(
         'categories_id' => $this->id,
         'posts_id'      => null,
-        'sticky'         => 0
+        'sticky'        => 0
       ))
       ->page($page, 10)
       ->orderBy('id', 'desc')

@@ -6,7 +6,8 @@ class HomeController extends ForumController
     parent::__construct();
     
     $this->setActionsAccessLevel(array(
-      'ajaxPostComment' => 1,
+      'ajaxPostComment'   => 1,
+      'ajaxUpdateComment' => 1,
     ));
   }
   /**
@@ -70,51 +71,7 @@ class HomeController extends ForumController
         'Post'               => $Post,
         'page'               => $page,
         'scroll_comment_id'  => $scroll_comment_id,
-        // Token para publicar comentario en el Post correcto.
-        'post_comment_token' => $this->generatePostCommentToken($Post),
       ));
-    }
-  }
-
-  /**
-   * Guarda un nuevo comentario de un Post en la base de datos, el Post se obtiene
-   * mediante $_POST['token'] y ForumController::checkPostCommentToken(), si el token
-   * no es valido devuelve un mensaje de error.
-   */
-  public function ajaxPostComment()
-  {
-    /* Obtener el ID del Post en base al token, si no existe no se puede publicar el
-     * comentario */
-    $post_id = $this->checkPostCommentToken($_POST['token']);
-    if ($post_id == null) {
-      $this->setAjaxResponse(null, 'Token invalido, recarga la pagina e intenta de nuevo.', true);
-    } else {
-      try {
-        /* Verificamos que el Post todavía exista, si no existe no podemos publicar
-         * el comentario */
-        $count = Post::query()->count()->where(array('id' => $post_id))->exec();
-        if ($count == 0) {
-          $this->setAjaxResponse(null, 'El tema ya no existe.', true);
-        } else {
-          $PostComment           = new Post();
-          $PostComment->posts_id = $post_id;
-          $PostComment->users_id = $this->User->id;
-          $PostComment->content  = $_POST['comment'];
-          
-          if (!$PostComment->save()) {
-            $this->setAjaxResponse(null, $PostComment->getErrorMsg(), true);
-          } else {
-            // Devolvemos el URL del nuevo comentario al cliente.
-            $this->setAjaxResponse($PostComment->getURL());
-          }
-        }
-      } catch (QuarkDBException $e) {
-        $this->setAjaxResponse(
-          null,
-          'No se pudo completar la solicitud, intenta más tarde.',
-          true
-        );
-      }
     }
   }
 }

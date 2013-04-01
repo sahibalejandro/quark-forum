@@ -10,14 +10,19 @@
   ?>
 </head>
 <body>
-  <div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar navbar-static-top navbar-inverse">
     <div class="navbar-inner">
       <div class="container">
         <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" class="brand"><?php echo QUARKPHP_FORUM; ?></a>
-        <?php
-        if ($this->userAreSigned()):
-        ?>
         <ul class="nav pull-right">
+        <?php if (!$this->userAreSigned()): ?>
+          <li>
+            <a href="#">
+              <i class="icon-user icon-white"></i>
+              Iniciar sesión
+            </a>
+          </li>
+        <?php else: ?>
           <li>
             <a href="<?php echo $this->User->getURL(); ?>">
               <i class="icon-user icon-white"></i>
@@ -30,10 +35,10 @@
               Salir
             </a>
           </li>
-        </ul>
         <?php
         endif;
         ?>
+        </ul>
       </div>
       <!-- // .container -->
     </div>

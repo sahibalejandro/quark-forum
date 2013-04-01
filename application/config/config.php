@@ -1,10 +1,12 @@
 <?php
 define('QUARKPHP_FORUM', 'QuarkPHP Foro');
-define('COMMENTS_PER_PAGE', 10);
+define('COMMENTS_PER_PAGE', 8);
 define('POSTS_PER_PAGE', 10);
+define('REQUEST_ERROR_MSG', 'No se pudo completar la solicitud, intenta más tarde');
 
-$config['session_name'] = 'quark-forum';
-$config['debug'] = true;
+$config['session_name']  = 'quark-forum';
+$config['debug']         = true;
+$config['auto_includes'] = array('markdown.php');
 
 $routes = array(
   'category(/.*)?' => 'home/category$1',

@@ -1,0 +1,13 @@
+[31-Mar-2013 19:03:49]
+lang=no_lang controller=home action=post arguments=6
+Fatal error: Call to undefined method HomeController::generatePostCommentToken() in /var/www/labs/quark-forum/application/controllers/HomeController.php on line 75
+
+[31-Mar-2013 19:14:26]
+lang=no_lang controller= action= arguments=6
+Parse error: syntax error, unexpected ';' in /var/www/labs/quark-forum/application/classes/ForumController.php on line 22
+
+[31-Mar-2013 19:36:45]
+lang=no_lang controller=home action=post arguments=2
+Notice: Undefined property: Post::$User in /var/www/labs/quark-forum/application/views/layout/post.php on line 15
+Fatal error: Call to a member function getLink() on a non-object in /var/www/labs/quark-forum/application/views/layout/post.php on line 15
+

@@ -6,18 +6,44 @@ class ForumController extends QuarkController
   public function __construct()
   {
     parent::__construct();
-    
-    // Inicializar la lista de tokens para publicar comentarios
-    if ($this->QuarkSess->get('post_comment_tokens') == null) {
-      $this->QuarkSess->set('post_comment_tokens', array());
-    }
 
     /**
      * TODO:
      * Validar la sesión y obtener datos del usuario firmado
      */
     $this->QuarkSess->setAccessLevel(1);
+    //$this->User = new User();
     $this->User = User::query()->selectById(1);
+  }
+
+  public function renderPost(Post $Post)
+  {
+    // Enviar $Post con un nombre de variable unico para evitar colisiones.
+    $this->renderView('layout/post.php', array('ThePost' => $Post));
+  }
+
+  public function renderPostCommentsPage(Post $Post, $page)
+  {
+    foreach ($Post->getCommentsPage($page) as $Comment) {
+      $this->renderPost($Comment);
+    }
+  }
+
+  /**
+   * Envía al buffer el código HTML para mostrar las opciones de formato que pueden
+   * ser elegidas para publicar un post/comentario
+   * 
+   * @param string $default_option Opcion seleccionada por default
+   */
+  public function renderFormatOptions($default_option = null)
+  {
+    if ($default_option == null) {
+      $default_option = 'txt';
+    }
+
+    $this->renderView('layout/post-format-options.php', array(
+      'default_option' => $default_option,
+    ));
   }
 
   /**
@@ -44,51 +70,13 @@ class ForumController extends QuarkController
   }
 
   /**
-   * Devuelve un TOKEN para ser utilizado en el formulario de envío para publicar
-   * un comentario, sin este token no se puede publicar comentarios, además con este
-   * token se asegura que el comentario sea publicado en el Post correspondiente.
-   *
-   * @see ForumController::checkPostCommentToken()
-   * @param Post $Post Instancia de Post para generar el token de comentario.
-   * @return string Token generado
-   */
-  protected function generatePostCommentToken(Post $Post)
-  {
-    $post_comment_tokens = $this->QuarkSess->get('post_comment_tokens');
-    $token = array_search($Post->id, $post_comment_tokens);
-    if ($token === false) {
-      $token = uniqid();
-      $post_comment_tokens[$token] = $Post->id;
-      $this->QuarkSess->set('post_comment_tokens', $post_comment_tokens);
-    }
-    return $token;
-  }
-
-  /**
-   * Devuelve el ID del Post que pertenece al token $token, si no existe el ID
-   * devuelve NULL.
-   * 
-   * @param string $token Token
-   * @return int|null
-   */
-  protected function checkPostCommentToken($token)
-  {
-    $post_comment_tokens = $this->QuarkSess->get('post_comment_tokens');
-    if (!isset($post_comment_tokens[$token])) {
-      return null;
-    } else {
-      return $post_comment_tokens[$token];
-    }
-  }
-
-  /**
    * Devuelve TRUE si el usuario actual ya esta firmado, de lo contrario devuelve FALSE
    *
    * @return bool
    */
   protected function userAreSigned()
   {
-    return ($this->User != null);
+    return (!$this->User->isNew());
   }
 
   /**

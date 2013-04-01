@@ -3,6 +3,9 @@ $(document).on('ready', function (e)
   var $BtnSubmit      = $('#btn_post_comment');
   var btn_submit_html = $BtnSubmit.html();
 
+  /**
+   * Enviar datos del formulario de comentario via AJAX
+   */
   $('#frm_comment').on('submit', function (e)
   {
     Quark.ajax('home/ajax-post-comment', {

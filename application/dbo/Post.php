@@ -68,6 +68,7 @@ class Post extends QuarkDBObject
     return $this->getChilds(__CLASS__)
       ->join('User')
       ->page($page, COMMENTS_PER_PAGE)
+      ->orderBy('id')
       ->exec();
   }
 
@@ -86,6 +87,11 @@ class Post extends QuarkDBObject
     return $this->countChilds('WatchedPost')->exec();
   }
 
+  public function isComment()
+  {
+    return ($this->posts_id != null);
+  }
+
   public function getLastComment()
   {
     return self::query()->selectOne()
@@ -93,6 +99,23 @@ class Post extends QuarkDBObject
       ->where(array('posts_id' => $this->id))
       ->orderBy('id', 'desc')
       ->exec();
+  }
+
+  /**
+   * Devuelve el contenido procesado del post.
+   * 
+   * @return string
+   */
+  public function getContent()
+  {
+    switch ($this->format) {
+      case 'md': // Markdown
+        return Markdown($this->content);
+        break;
+      default:
+        return $this->content;
+        break;
+    }
   }
 
   public function isGlobal()

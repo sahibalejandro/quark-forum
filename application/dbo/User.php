@@ -7,14 +7,34 @@ class User extends QuarkDBObject
   private $link;
   private $url;
 
+  /**
+   * Devuelve TRUE si el usuario actual puede editar el Post $Post, de lo contrario
+   * devuelve FALSE
+   * 
+   * @param Post $Post Instancia de Post para verificar (puede ser un post o comentario)
+   * @return bool
+   */
+  public function canEditPost(Post $Post)
+  {
+    return (!$this->isNew() && ($this->type == 'A' || $this->type == 'M' || $this->id == $Post->users_id));
+  }
+
   public function isWatchingPost(Post $Post)
   {
-    return (WatchedPost::query()->count()->where(array('posts_id' => $Post->id, 'users_id' => $this->id))->exec() === 1);
+    if ($this->isNew()) {
+      return false;
+    } else {
+      return (WatchedPost::query()->count()->where(array('posts_id' => $Post->id, 'users_id' => $this->id))->exec() === 1);
+    }
   }
 
   public function isFavoritePost(Post $Post)
   {
-    return (FavoritePost::query()->count()->where(array('posts_id' => $Post->id, 'users_id' => $this->id))->exec() === 1);
+    if ($this->isNew()) {
+      return false;
+    } else {
+      return (FavoritePost::query()->count()->where(array('posts_id' => $Post->id, 'users_id' => $this->id))->exec() === 1);
+    }
   }
 
   private function extend()

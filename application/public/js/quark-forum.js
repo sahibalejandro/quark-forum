@@ -1,3 +1,9 @@
+$(document).on('ready', function (e)
+{
+  // Inicializar tooltips
+  $('[data-toggle=tooltip]').tooltip();
+});
+
 var QuarkForum = {
   /**
    * Muestra un mensaje en el area de mensajes, el mensaje desaparece automaticamente
